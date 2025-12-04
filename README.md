@@ -1,6 +1,6 @@
-# HTTP Hello World
+# MCP Wrapper
 
-This is a simple Rust Wasm example that responds with a "Hello World" message for each request.
+This is a HTTP component that wraps and routes requests to an MCP (Model Context Protocol) component. It provides HTTP routing for health checks, actions, and MCP protocol handling.
 
 ## Prerequisites
 
@@ -14,13 +14,11 @@ This is a simple Rust Wasm example that responds with a "Hello World" message fo
 wash build
 ```
 
-## Running with wasmtime
+## Routes
 
-You must have wasmtime >=25.0.0 for this to work. Make sure to follow the build step above first.
-
-```bash
-wasmtime serve -Scommon ./build/http_hello_world_s.wasm
-```
+- `GET /health` - Health check endpoint
+- `POST /actions` - Actions endpoint (Betty Blocks integration - currently mocked)
+- `POST /mcp` - MCP protocol endpoint (delegates to MCP component)
 
 ## Running with wasmCloud
 
@@ -28,9 +26,29 @@ wasmtime serve -Scommon ./build/http_hello_world_s.wasm
 wash dev
 ```
 
+Test the endpoints:
+
 ```shell
-curl http://127.0.0.1:8000
+# Health check
+curl http://127.0.0.1:8000/health
+
+# Actions endpoint
+curl -X POST http://127.0.0.1:8000/actions \
+  -H "Content-Type: application/json" \
+  -d '{"action_id": "test", "payload": {"input": "test data"}}'
+
+# MCP endpoint
+curl -X POST http://127.0.0.1:8000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "method": "test", "params": {}}'
 ```
+
+## Architecture
+
+This component acts as an HTTP router that:
+- Handles basic HTTP routes (health, actions)
+- Delegates MCP protocol requests to an imported MCP component via WIT bindings
+- Uses the WASI HTTP interface for protocol-level request/response handling
 
 ## Adding Capabilities
 

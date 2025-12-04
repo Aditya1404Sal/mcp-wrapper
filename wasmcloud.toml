@@ -1,0 +1,11 @@
+name = "mcp-wrapper"
+version = "0.1.0"
+language = "rust"
+type = "component"
+
+[component]
+wit_world = "hello"
+wasm_target = "wasm32-wasip2"
+
+[overrides]
+"wasmcloud:mcp" = { path = "../http-mcp-minimal/wit/world.wit" }

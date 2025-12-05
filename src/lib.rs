@@ -74,6 +74,7 @@ fn send_response(response_out: ResponseOutparam, response: HttpResponse) {
     output_stream
         .blocking_write_and_flush(response.body.as_bytes())
         .unwrap();
+    drop(output_stream);
     OutgoingBody::finish(response_body, None).unwrap();
 }
 

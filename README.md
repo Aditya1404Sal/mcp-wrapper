@@ -26,24 +26,11 @@ wash build
 wash dev
 ```
 
-Test the endpoints:
-
-```shell
-# Health check
-curl http://127.0.0.1:8000/health
-
-# Actions endpoint
-curl -X POST http://127.0.0.1:8000/actions \
-  -H "Content-Type: application/json" \
-  -d '{"action_id": "test", "payload": {"input": "test data"}}'
-
-# MCP endpoint
-curl -X POST http://127.0.0.1:8000/mcp \
-  -H "Content-Type: application/json" \
-  -d '{"jsonrpc": "2.0", "method": "test", "params": {}}'
-```
+Test the endpoints - see [Testing.md](./Testing.md) for detailed testing instructions.
 
 ## Architecture
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed architecture documentation.
 
 This component acts as an HTTP router that:
 - Handles basic HTTP routes (health, actions)
